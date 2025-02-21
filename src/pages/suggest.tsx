@@ -9,7 +9,7 @@ export default function SuggestTask() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
             const response = await fetch(`${apiUrl}/suggest-task`, {
                 method: 'POST',
                 headers: {

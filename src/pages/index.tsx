@@ -8,7 +8,7 @@ export default function Home() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"; // Use environment variable
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL; // Use environment variable
                 const response = await fetch(`${apiUrl}/tasks`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch tasks');
