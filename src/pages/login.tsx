@@ -5,12 +5,14 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true); // Start loading
         try {
-            const response = await fetch('http://localhost:8080/login', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
@@ -26,10 +28,13 @@ export default function Login() {
         } catch (error) {
             let errorMessage = "Failed";
             if (error instanceof Error) {
-              errorMessage = error.message;
+                errorMessage = error.message;
             }
-            console.log(errorMessage);
-          }
+            console.error(errorMessage);
+            setError(errorMessage); // Update the error state
+        } finally {
+            setLoading(false); // Stop loading
+        }
     };
 
     return (
@@ -60,9 +65,10 @@ export default function Login() {
                     </div>
                     <button
                         type="submit"
+                        disabled={loading} // Disable the button while loading
                         className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
                     >
-                        Login
+                        {loading ? "Logging in..." : "Login"} {/* Show loading text */}
                     </button>
                 </form>
                 <p className="mt-4 text-center text-sm">

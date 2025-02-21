@@ -6,12 +6,14 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true); // Start loading
         try {
-            const response = await fetch('http://localhost:8080/register', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, email }),
@@ -25,10 +27,13 @@ export default function Register() {
         } catch (error) {
             let errorMessage = "Failed";
             if (error instanceof Error) {
-              errorMessage = error.message;
+                errorMessage = error.message;
             }
-            console.log(errorMessage);
-          }
+            console.error(errorMessage);
+            setError(errorMessage); // Update the error state
+        } finally {
+            setLoading(false); // Stop loading
+        }
     };
 
     return (
@@ -69,9 +74,10 @@ export default function Register() {
                     </div>
                     <button
                         type="submit"
+                        disabled={loading} // Disable the button while loading
                         className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition duration-200"
                     >
-                        Register
+                        {loading ? "Registering..." : "Register"} {/* Show loading text */}
                     </button>
                 </form>
                 <p className="mt-4 text-center text-sm">
