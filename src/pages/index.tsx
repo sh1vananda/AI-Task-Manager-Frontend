@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProtectedRoute from '../components/ProtectedRoute';
-import { Task } from 'C:/Users/cyber/Downloads/Zocket task/ai-task-manager-frontend/types';
+import { Task } from '@/types/types';
 
 export default function Home() {
     const [tasks, setTasks] = useState<Task[]>([]);
